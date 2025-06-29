@@ -17,7 +17,7 @@ document.getElementById("registrationForm").addEventListener("submit", function 
 
   document.getElementById("status").textContent = "Submitting...";
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyAECLL_YkSreGBXcURTqeS7Bo58fzfZPrvzihxHzBz/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbw_Yy_Iqey4SrNnO41d6AUccLWzqbA59pE0tHbhY1qRaMl3HPYbrbE13zLJDocGY0gC8Q/exec";
   
   fetch(scriptURL, {
     method: "POST",
