@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download Letters</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-top: 40px;
+      font-size: 2rem;
+    }
+
+    .letter-list {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+    }
+
+    th, td {
+      padding: 10px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: left;
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    a.download-link {
+      color: #ffff88;
+      text-decoration: underline;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h1>📥 Download Training Letters</h1>
+  <div class="letter-list">
+    <table id="letterTable">
+      <thead>
+        <tr>
+          <th>Candidate Name</th>
+          <th>Reporting Date</th>
+          <th>Letter Generated On</th>
+          <th>Download</th>
+        </tr>
+      </thead>
+      <tbody id="letterTableBody">
+        <tr><td colspan="4">Loading letters...</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Showing most recent generated letters. Data loads from Google Sheet.</p>
+
+  <script>
+    const sheetURL = ""; // ← Google Sheet का Public JSON/CSV/Apps Script API URL यहाँ भरें
+
+    async function fetchLetters() {
+      try {
+        // 👇 यह URL Apps Script या JSON Feed से आता है (replace with your source)
+        const response = await fetch(sheetURL);
+        const data = await response.json();
+
+        const tableBody = document.getElementById("letterTableBody");
+        tableBody.innerHTML = "";
+
+        data.forEach(row => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${row.name}</td>
+            <td>${row.reportingDate}</td>
+            <td>${row.generatedOn}</td>
+            <td><a class="download-link" href="${row.pdfUrl}" target="_blank">Download</a></td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      } catch (err) {
+        document.getElementById("letterTableBody").innerHTML = `<tr><td colspan="4">❌ Failed to load data.</td></tr>`;
+        console.error(err);
+      }
+    }
+
+    fetchLetters();
+  </script>
+</body>
+</html>
