@@ -113,49 +113,8 @@
     <div class="status" id="status"></div>
   </div>
 
-  <script>
-    document.getElementById("registrationForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const form = e.target;
-
-      const data = {
-        name: form.name.value,
-        fatherName: form.fatherName.value,
-        email: form.email.value,
-        phone: form.phone.value,
-        reportingDate: form.reportingDate.value,
-        accommodation: form.accommodation.value,
-        accommodationText: form.accommodation.value === "Basic"
-          ? "If you do not have a place to stay in Varanasi during the training period, the we can arrange a personal PG room at a Minimal Charge of ₹2,750."
-          : "You have not opted for any accommodation. A ₹800 training facility and administrative fee will apply."
-      };
-
-      document.getElementById("status").textContent = "Submitting...";
-
-      // Replace below URL with your Google Apps Script Web App URL
-      fetch("https://script.google.com/macros/s/your_script_id/exec", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(res => res.json())
-      .then(res => {
-        if(res.status === "success") {
-          document.getElementById("status").innerHTML = `✅ Form submitted! <br><a href="${res.pdfUrl}" target="_blank" style="color: #fff; text-decoration: underline;">Download Letter</a>`;
-        } else {
-          document.getElementById("status").textContent = "❌ Submission failed. Please try again.";
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById("status").textContent = "❌ Error occurred while submitting.";
-      });
-    });
-  </script>
-</body>
-
   <script src="form-handler.js"></script>
+  
+  </body>
   
 </html>
