@@ -63,12 +63,12 @@
         const res = await fetch(sheetURL);
         const data = await res.json();
 
-        // Event Mapping
-        return data.map(row => ({
-          title: `${row.name} Reporting`,
-          start: row.reportingDate,
-          description: row.accommodation
-        }));
+// सुधार: row.name -> row.Full_Name, row.reportingDate -> row.Reporting_Date
+return data.map(row => ({
+  title: `${row.Full_Name} Reporting`, // पूरा नाम लें
+  start: row.Reporting_Date, // सही कॉलम नाम
+  description: row.Accommodation
+}));
       } catch (err) {
         console.error("Failed to load events", err);
         return [];
