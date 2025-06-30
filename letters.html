@@ -95,12 +95,13 @@
 
         data.forEach(row => {
           const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${row.name}</td>
-            <td>${row.reportingDate}</td>
-            <td>${row.generatedOn}</td>
-            <td><a class="download-link" href="${row.pdfUrl}" target="_blank">Download</a></td>
-          `;
+          // सुधार: डेटा मैपिंग ठीक करें
+tr.innerHTML = `
+  <td>${row.Full_Name}</td> <!-- नाम -->
+  <td>${row.Reporting_Date}</td> <!-- रिपोर्टिंग तिथि -->
+  <td>${row.Letter_Date} ${row.Letter_Time}</td> <!-- जनरेट की तिथि/समय -->
+  <td><a class="download-link" href="${row.PDF_URL}" target="_blank">Download</a></td>
+`;
           tableBody.appendChild(tr);
         });
       } catch (err) {
