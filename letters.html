@@ -81,36 +81,37 @@
   </div>
   <p class="note">Showing most recent generated letters. Data loads from Google Sheet.</p>
 
-  <script>
-    const sheetURL = "https://script.google.com/macros/s/AKfycbzZ73e8wITRGmqredx48_s_QmlPNYmhBwuYVDyC8koNFsuvyz4ngWFexjn3rrCH0fU/exec"; // ← Google Sheet का Public JSON/CSV/Apps Script API URL यहाँ भरें
+  <!-- सुधार: टेबल कॉलम नाम अपडेट करें -->
+<script>
+const sheetURL = "https://script.google.com/macros/s/AKfycbzZ73e8wITRGmqredx48_s_QmlPNYmhBwuYVDyC8koNFsuvyz4ngWFexjn3rrCH0fU/exec";
 
-    async function fetchLetters() {
-      try {
-        // 👇 यह URL Apps Script या JSON Feed से आता है (replace with your source)
-        const response = await fetch(sheetURL);
-        const data = await response.json();
+async function fetchLetters() {
+  try {
+    const response = await fetch(sheetURL);
+    const data = await response.json();
 
-        const tableBody = document.getElementById("letterTableBody");
-        tableBody.innerHTML = "";
+    const tableBody = document.getElementById("letterTableBody");
+    tableBody.innerHTML = "";
 
-        data.forEach(row => {
-          const tr = document.createElement("tr");
-          // सुधार: डेटा मैपिंग ठीक करें
-tr.innerHTML = `
-  <td>${row.Full_Name}</td> <!-- नाम -->
-  <td>${row.Reporting_Date}</td> <!-- रिपोर्टिंग तिथि -->
-  <td>${row.Letter_Date} ${row.Letter_Time}</td> <!-- जनरेट की तिथि/समय -->
-  <td><a class="download-link" href="${row.PDF_URL}" target="_blank">Download</a></td>
-`;
-          tableBody.appendChild(tr);
-        });
-      } catch (err) {
-        document.getElementById("letterTableBody").innerHTML = `<tr><td colspan="4">❌ Failed to load data.</td></tr>`;
-        console.error(err);
-      }
-    }
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.Full_Name}</td> <!-- कॉलम नाम बदलें -->
+        <td>${row.Reporting_Date}</td>
+        <td>${row.Letter_Date} ${row.Letter_Time}</td>
+        <td><a class="download-link" href="${row.PDF_URL}" target="_blank">Download</a></td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  } catch (err) {
+    document.getElementById("letterTableBody").innerHTML = `
+      <tr><td colspan="4">❌ Failed to load data. ${err.message}</td></tr>
+    `;
+    console.error("Data loading error:", err);
+  }
+}
 
-    fetchLetters();
-  </script>
+fetchLetters();
+</script>
 </body>
 </html>
