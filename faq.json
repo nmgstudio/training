@@ -1,0 +1,23 @@
+{
+  "hi": [
+    { "q": "कंपनी क्या करती है", "a": "हम एक आईटी कंपनी हैं जो सॉफ्टवेयर डेवलपमेंट और ट्रेनिंग सेवाएं प्रदान करती है।" },
+    { "q": "पगार कितनी है", "a": "आपके पद और अनुभव के अनुसार ₹15,000 से ₹50,000 तक हो सकती है।" },
+    { "q": "वर्क फ्रॉम होम है क्या", "a": "हाँ, कुछ पदों के लिए वर्क फ्रॉम होम की सुविधा उपलब्ध है।" },
+    { "q": "काम कहां करना होगा", "a": "काम उत्तर प्रदेश, दिल्ली, या मुंबई में स्थित ऑफिस में हो सकता है।" },
+    { "q": "इंटरव्यू कैसे होगा", "a": "इंटरव्यू ऑनलाइन या ऑफिस में फेस-टू-फेस लिया जा सकता है।" }
+  ],
+  "en": [
+    { "q": "what does the company do", "a": "We are an IT company providing software development and training services." },
+    { "q": "what is the salary", "a": "Depending on your role and experience, it can range from ₹15,000 to ₹50,000." },
+    { "q": "is work from home available", "a": "Yes, for selected roles, work from home is available." },
+    { "q": "where is the work location", "a": "The work location can be in UP, Delhi, or Mumbai." },
+    { "q": "how will the interview happen", "a": "Interviews can be conducted online or face-to-face at our office." }
+  ],
+  "hinglish": [
+    { "q": "company kya karti hai", "a": "Hum ek IT company hain jo software aur training provide karti hai." },
+    { "q": "salary kitni hai", "a": "Aapke role aur experience ke hisab se ₹15,000 se ₹50,000 ho sakti hai." },
+    { "q": "work from home hai kya", "a": "Haan, kuch posts ke liye work from home ka option hai." },
+    { "q": "kaam kaha hoga", "a": "Kaam UP, Delhi ya Mumbai ke office mein ho sakta hai." },
+    { "q": "interview kaise hoga", "a": "Interview online ya face-to-face ho sakta hai." }
+  ]
+}
