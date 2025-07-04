@@ -1,14 +1,16 @@
 let faqData = {}; // JSON से डेटा आने के बाद इसमें स्टोर होगा
+let chatHistory = []; // लोकल चैट हिस्ट्री
+
+// LocalStorage से चैट लोड करें
+window.onload = () => {
+  loadChatHistory();
+};
 
 // FAQ JSON लोड करें
 fetch('faq.json')
   .then(res => res.json())
-  .then(data => {
-    faqData = data;
-  })
-  .catch(err => {
-    console.error("FAQ JSON लोड नहीं हो सका:", err);
-  });
+  .then(data => { faqData = data; })
+  .catch(err => console.error("FAQ JSON लोड नहीं हो सका:", err));
 
 // चैट बॉक्स में मैसेज जोड़ने का फंक्शन
 function addMessage(text, type = 'received') {
@@ -18,9 +20,13 @@ function addMessage(text, type = 'received') {
   msg.textContent = text;
   chatBox.appendChild(msg);
   chatBox.scrollTop = chatBox.scrollHeight;
+
+  // लोकल हिस्ट्री में सेव करें
+  chatHistory.push({ text, type });
+  saveChatHistory();
 }
 
-// उत्तर खोजने का फंक्शन (language ऑटो-डिटेक्ट + कीवर्ड मैच)
+// उत्तर खोजने का फंक्शन
 function findAnswer(inputText) {
   inputText = inputText.trim().toLowerCase();
   const lang = detectLanguage(inputText);
@@ -33,7 +39,7 @@ function findAnswer(inputText) {
     }
   }
 
-  // Keyword match (साधारण .includes logic)
+  // Keyword match
   for (let i = 0; i < faqs.length; i++) {
     const words = faqs[i].q.toLowerCase().split(" ");
     let match = true;
@@ -46,24 +52,21 @@ function findAnswer(inputText) {
     if (match) return faqs[i].a;
   }
 
-  // कोई जवाब न मिला
   return "माफ़ कीजिए, मुझे उस सवाल का उत्तर नहीं पता। कृपया HR से संपर्क करें।";
 }
 
-// भाषा पहचानने का फंक्शन (देवनागरी = हिंदी, रोमन = Hinglish/English)
+// भाषा पहचानें
 function detectLanguage(text) {
   if (/[ऀ-ॿ]/.test(text)) {
-    return 'hi';         // हिंदी
-  } else if (/[^a-zA-Z0-9 ?]/.test(text)) {
-    return 'hi';         // अन्य देवनागरी संकेत
+    return 'hi';
   } else if (/\b(kitna|kya|kab|kaam|hoga)\b/.test(text)) {
-    return 'hinglish';   // Hindlish keywords
+    return 'hinglish';
   } else {
-    return 'en';         // Default English
+    return 'en';
   }
 }
 
-// SEND बटन क्लिक या एंटर प्रेस पर मैसेज प्रोसेस करें
+// Send बटन और Enter पर भेजना
 function handleSend() {
   const input = document.getElementById('user-input');
   const text = input.value.trim();
@@ -71,7 +74,6 @@ function handleSend() {
 
   addMessage(text, 'sent');
 
-  // 1 सेकंड की देरी से जवाब दिखाएँ
   setTimeout(() => {
     const answer = findAnswer(text);
     addMessage(answer, 'received');
@@ -80,8 +82,20 @@ function handleSend() {
   input.value = '';
 }
 
-// बटन और एंटर दोनों पर भेजने की सुविधा
 document.getElementById('send-btn').addEventListener('click', handleSend);
 document.getElementById('user-input').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') handleSend();
 });
+
+// 🔁 LocalStorage: सेव और लोड करने के फ़ंक्शन
+function saveChatHistory() {
+  localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+}
+
+function loadChatHistory() {
+  const saved = localStorage.getItem('chatHistory');
+  if (saved) {
+    chatHistory = JSON.parse(saved);
+    chatHistory.forEach(msg => addMessage(msg.text, msg.type));
+  }
+}
