@@ -252,7 +252,7 @@
             const sheetNumber = (currentMinutes % 10) + Math.floor(currentMinutes / 10); // मिनट्स के अंकों का योग
             doc.text(`Sheet Number: `, margin + 0.2, y);
             const sheetX = margin + 0.2 + doc.getStringUnitWidth('Sheet Number: ') * 8 / 72;
-            addText(`${sheetNumber}/20`, sheetX, y, { style: 'bold' });
+            addText(`${sheetNumber}/20`, sheetX, y);
             y += lineSpacing * 1.5;
 
             // --- ACCOMMODATION LOGIC (FIXED) ---
