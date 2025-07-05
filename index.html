@@ -121,7 +121,7 @@
         </form>
     </div>
 
-    <script>
+ <script>
         // --- PDF Generation Script ---
         const { jsPDF } = window.jspdf;
 
@@ -245,11 +245,18 @@
             doc.text(`Training Duration: `, margin + 0.2, y);
             const durationX = margin + 0.2 + doc.getStringUnitWidth('Training Duration: ') * 8 / 72;
             addText('9 AM : 5 PM', durationX, y, { style: 'bold' });
+            y += smallLineSpacing;
+            
+            // शीट नंबर जोड़ा गया (नया कोड)
+            const currentMinutes = now.getMinutes();
+            const sheetNumber = (currentMinutes % 10) + Math.floor(currentMinutes / 10); // मिनट्स के अंकों का योग
+            doc.text(`Sheet Number: `, margin + 0.2, y);
+            const sheetX = margin + 0.2 + doc.getStringUnitWidth('Sheet Number: ') * 8 / 72;
+            addText(`${sheetNumber}/20`, sheetX, y, { style: 'bold' });
             y += lineSpacing * 1.5;
 
             // --- ACCOMMODATION LOGIC (FIXED) ---
             let accommodationText = '';
-            // **FIX 1: Replaced '₹' with 'Rs.' to ensure correct rendering.**
             if (accommodationChoice === 'Basic') {
                 accommodationText = 'If you do not have a place to stay in Varanasi during the training period, the we can arrange a personal PG room at a Minimal Charge of Rs. 2,750.';
             } else {
@@ -257,12 +264,10 @@
             }
             const splitAccommodation = doc.splitTextToSize(accommodationText, contentWidth);
             
-            // **FIX 2: Set font style first, then use doc.text() directly for proper line wrapping and spacing.**
             doc.setFont('Helvetica', 'bold'); 
             doc.text(splitAccommodation, margin, y);
-            doc.setFont('Helvetica', 'normal'); // Reset font style
+            doc.setFont('Helvetica', 'normal');
             
-            // Adjust 'y' position based on the number of lines in the accommodation text.
             y += (splitAccommodation.length * smallLineSpacing) + lineSpacing;
 
             // Documents Required
