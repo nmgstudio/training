@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ट्रेनिंग रजिस्ट्रेशन फॉर्म | Garment Textile Pvt. Ltd.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for better aesthetics */
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .form-container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        .form-input {
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            outline: none;
+        }
+        .submit-btn {
+            background: linear-gradient(90deg, #4f46e5, #818cf8);
+            color: white;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-2xl mx-auto form-container p-8">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">ट्रेनिंग कन्फर्मेशन लेटर</h1>
+            <p class="text-gray-500 mt-2">कृपया लेटर जनरेट करने के लिए नीचे दिया गया फॉर्म भरें।</p>
+        </div>
+
+        <form id="registrationForm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Name -->
+                <div class="mb-4">
+                    <label for="name" class="block text-gray-700 font-medium mb-2">पूरा नाम (Name)</label>
+                    <input type="text" id="name" name="name" class="w-full p-3 bg-gray-50 form-input" placeholder="जैसे, राहुल कुमार" required>
+                </div>
+                <!-- Father's Name -->
+                <div class="mb-4">
+                    <label for="fatherName" class="block text-gray-700 font-medium mb-2">पिता का नाम (Father's Name)</label>
+                    <input type="text" id="fatherName" name="fatherName" class="w-full p-3 bg-gray-50 form-input" placeholder="जैसे, सुरेश कुमार" required>
+                </div>
+                <!-- Email -->
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-700 font-medium mb-2">ईमेल (E-mail)</label>
+                    <input type="email" id="email" name="email" class="w-full p-3 bg-gray-50 form-input" placeholder="जैसे, rahul@example.com" required>
+                </div>
+                <!-- Contact Number -->
+                <div class="mb-4">
+                    <label for="phone" class="block text-gray-700 font-medium mb-2">संपर्क नंबर (Contact Number)</label>
+                    <input type="tel" id="phone" name="phone" class="w-full p-3 bg-gray-50 form-input" placeholder="जैसे, 9876543210" required>
+                </div>
+                <!-- Reporting Date -->
+                <div class="mb-4">
+                    <label for="reportingDate" class="block text-gray-700 font-medium mb-2">रिपोर्टिंग की तारीख (Reporting Date)</label>
+                    <input type="date" id="reportingDate" name="reportingDate" class="w-full p-3 bg-gray-50 form-input" required>
+                </div>
+                <!-- Accommodation -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">आवास (Accommodation)</label>
+                    <div class="flex items-center space-x-6 mt-2">
+                        <label class="flex items-center">
+                            <input type="radio" name="accommodation" value="Basic" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                            <span class="ml-2 text-gray-700">बेसिक (Basic)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="accommodation" value="None" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" checked>
+                            <span class="ml-2 text-gray-700">कोई नहीं (None)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-8 text-center">
+                <button type="submit" id="submitBtn" class="submit-btn inline-flex items-center justify-center">
+                    <span id="btnText">लेटर जनरेट और डाउनलोड करें</span>
+                    <div id="loader" class="loader hidden ml-3"></div>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // --- PDF Generation Script ---
+        const { jsPDF } = window.jspdf;
+
+        const registrationForm = document.getElementById('registrationForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const loader = document.getElementById('loader');
+
+        registrationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            btnText.textContent = 'प्रोसेसिंग...';
+            loader.classList.remove('hidden');
+            submitBtn.disabled = true;
+
+            const name = document.getElementById('name').value;
+            const fatherName = document.getElementById('fatherName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const reportingDateRaw = document.getElementById('reportingDate').value;
+            const accommodation = document.querySelector('input[name="accommodation"]:checked').value;
+
+            const dateParts = reportingDateRaw.split('-');
+            const reportingDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+            setTimeout(() => {
+                generatePDF(name, fatherName, email, phone, reportingDate, accommodation);
+                
+                btnText.textContent = 'लेटर जनरेट और डाउनलोड करें';
+                loader.classList.add('hidden');
+                submitBtn.disabled = false;
+            }, 500);
+        });
+
+        function generatePDF(name, fatherName, email, phone, reportingDate, accommodationChoice) {
+            const doc = new jsPDF({
+                orientation: 'p',
+                unit: 'in',
+                format: 'letter'
+            });
+
+            doc.setFont('Helvetica');
+            doc.setTextColor('#000000');
+
+            const margin = 1;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const contentWidth = pageWidth - (margin * 2);
+            let y = margin;
+            const lineSpacing = 0.2;
+            const smallLineSpacing = 0.15;
+
+            function addText(text, x, yPos, options = {}) {
+                const { style = 'normal', size = 8, align = 'left' } = options;
+                doc.setFontSize(size);
+                doc.setFont('Helvetica', style);
+                
+                let textX = x;
+                if (align === 'center') {
+                    textX = pageWidth / 2;
+                } else if (align === 'right') {
+                    textX = pageWidth - margin;
+                }
+                doc.text(text, textX, yPos, { align });
+            }
+
+            // Header (अब लेफ्ट अलाइन्ड)
+            addText('Garment Textile Private Limited', margin, y, { style: 'bold', size: 10, align: 'left' });
+            y += lineSpacing;
+            addText('Soyepur Bazar, Pandeypur, Varanasi, Uttar Pradesh - 221007', margin, y, { size: 8, align: 'left' });
+            y += smallLineSpacing;
+            addText('+91 79707 74361 | garmenttxtpvtltd@hotmail.com', margin, y, { size: 8, align: 'left' });
+            y += lineSpacing;
+            
+            // Horizontal Line
+            doc.setDrawColor(0);
+            doc.setLineWidth(0.01); 
+            doc.line(margin, y, pageWidth - margin, y);
+            y += lineSpacing;
+
+            // Date
+            const now = new Date();
+            const formattedDate = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            addText(`Date: ${formattedDate}`, margin, y, { style: 'bolditalic' });
+            y += lineSpacing * 2;
+
+            // Recipient Details
+            addText('To,', margin, y);
+            y += lineSpacing;
+            addText(name, margin, y, { style: 'bold' });
+            y += smallLineSpacing;
+            addText(`S/o ${fatherName}`, margin, y);
+            y += smallLineSpacing;
+            addText(`Email: ${email}`, margin, y);
+            y += smallLineSpacing;
+            addText(`Phone: ${phone}`, margin, y);
+            y += lineSpacing * 2;
+
+            // Subject
+            addText('Subject: Confirmation of Industrial Training', margin, y, { style: 'bolditalic' });
+            y += lineSpacing * 2;
+
+            // Body
+            doc.setFont('Helvetica', 'normal');
+            addText(`Dear ${name},`, margin, y, { style: 'bold' });
+            y += lineSpacing;
+            const bodyText1 = 'We are pleased to inform you that you have been selected for the Industrial Training Program at Garment Textile Pvt. Ltd. The details of your training are mentioned below:';
+            const splitBodyText1 = doc.splitTextToSize(bodyText1, contentWidth);
+            doc.text(splitBodyText1, margin, y);
+            y += (splitBodyText1.length * smallLineSpacing) + lineSpacing;
+
+            // Training Details
+            addText('Training Details', margin, y, { style: 'bolditalic' });
+            y += lineSpacing;
+            doc.setFont('Helvetica', 'normal');
+            doc.text(`Training Location: Varanasi`, margin + 0.2, y);
+            y += smallLineSpacing;
+            doc.text(`Work Location: Varanasi`, margin + 0.2, y);
+            y += smallLineSpacing;
+            doc.text(`Reporting Date: ${reportingDate}`, margin + 0.2, y);
+            y += smallLineSpacing;
+            doc.text(`Training Duration: `, margin + 0.2, y);
+            const durationX = margin + 0.2 + doc.getStringUnitWidth('Training Duration: ') * 8 / 72;
+            addText('9 AM : 5 PM', durationX, y, { style: 'bold' });
+            y += lineSpacing * 1.5;
+
+            // --- ACCOMMODATION LOGIC (FIXED) ---
+            let accommodationText = '';
+            // **FIX 1: Replaced '₹' with 'Rs.' to ensure correct rendering.**
+            if (accommodationChoice === 'Basic') {
+                accommodationText = 'If you do not have a place to stay in Varanasi during the training period, the we can arrange a personal PG room at a Minimal Charge of Rs. 2,750.';
+            } else {
+                accommodationText = 'You have not opted for any accommodation. A Rs. 800 training facility and administrative fee will apply.';
+            }
+            const splitAccommodation = doc.splitTextToSize(accommodationText, contentWidth);
+            
+            // **FIX 2: Set font style first, then use doc.text() directly for proper line wrapping and spacing.**
+            doc.setFont('Helvetica', 'bold'); 
+            doc.text(splitAccommodation, margin, y);
+            doc.setFont('Helvetica', 'normal'); // Reset font style
+            
+            // Adjust 'y' position based on the number of lines in the accommodation text.
+            y += (splitAccommodation.length * smallLineSpacing) + lineSpacing;
+
+            // Documents Required
+            addText('Documents Required at Reporting', margin, y, { style: 'bolditalic' });
+            y += smallLineSpacing;
+            const docText = 'Please bring the following documents (originals + one self-attested copy):';
+            doc.text(docText, margin, y);
+            y += lineSpacing;
+
+            const documents = [
+                'Resume or Cover Letter',
+                '2 Passport-size Photograph (same as uploaded)',
+                'College ID Card or Marksheet(s)',
+                'Aadhar Card / Valid Government ID',
+                'Permanent Account Number (PAN) Card',
+                'Current Bank\'s Passbook'
+            ];
+            
+            documents.forEach((item, index) => {
+                let parts = item.split(/(\*.*?\*)/g).filter(Boolean);
+                let currentX = margin + 0.2;
+                doc.text(`${index + 1}. `, currentX, y);
+                currentX += doc.getStringUnitWidth(`${index + 1}. `) * 8 / 72;
+                
+                parts.forEach(part => {
+                    if (part.startsWith('*') && part.endsWith('*')) {
+                        doc.setFont('Helvetica', 'bold');
+                        doc.text(part.slice(1, -1), currentX, y);
+                        currentX += doc.getStringUnitWidth(part.slice(1, -1)) * 8 / 72;
+                    } else {
+                        doc.setFont('Helvetica', 'normal');
+                        doc.text(part, currentX, y);
+                        currentX += doc.getStringUnitWidth(part) * 8 / 72;
+                    }
+                });
+                y += smallLineSpacing;
+            });
+            y += lineSpacing;
+
+            // Closing Remarks
+            const closingText = 'We believe this training will be beneficial for your technical growth and professional development. Please reach out to us at the above contact for any clarifications.';
+            const splitClosingText = doc.splitTextToSize(closingText, contentWidth);
+            doc.text(splitClosingText, margin, y);
+            y += (splitClosingText.length * smallLineSpacing) + lineSpacing;
+            doc.text('We look forward to your presence and contribution.', margin, y);
+            y += lineSpacing * 2;
+
+            // Signature
+            doc.text('Warm regards,', margin, y);
+            y += lineSpacing * 2;
+            addText('Manish Gupta', margin, y, { style: 'bold' });
+            y += smallLineSpacing;
+            addText('+91 95194 43625', margin, y, { style: 'bold' });
+            y += smallLineSpacing;
+            addText('Garment Textile Private Limited', margin, y, { style: 'bold' });
+            y += smallLineSpacing;
+            doc.text('Soyepur Bazar, Pandeypur, Varanasi, Uttar Pradesh', margin, y);
+            y += smallLineSpacing;
+            addText('221007', margin, y, { style: 'bold' });
+            y += lineSpacing;
+
+            // Final Horizontal Line
+            doc.line(margin, y, pageWidth - margin, y);
+            y += lineSpacing;
+
+            // Footer Note
+            addText('Note: This is a system-generated letter and does not require a physical signature.', pageWidth / 2, y, { style: 'italic', align: 'center' });
+
+            doc.save(`Training_Letter_${name.replace(/\s/g, '_')}.pdf`);
+        }
+    </script>
+</body>
+</html>
